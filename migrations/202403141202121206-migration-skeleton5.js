@@ -2,10 +2,6 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    // await queryInterface.removeConstraint('Bookings', 'fk_booking_room');
-    // await queryInterface.removeColumn('Bookings', 'roomId');
-    // await queryInterface.dropTable('Rooms');
-    // await queryInterface.dropTable('Bookings');
     await queryInterface.createTable('Rooms', {
       id: {
         allowNull: false,

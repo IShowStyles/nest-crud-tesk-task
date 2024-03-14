@@ -3,15 +3,15 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15
-    container_name: tes2tst
+    container_name: tes22tst
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: al2ex
-      POSTGRES_PASSWORD: postgres2ql13
-      POSTGRES_DB: nest-t2est
+      POSTGRES_USER: al22ex
+      POSTGRES_PASSWORD: postgres2ql213
+      POSTGRES_DB: nest-t22est
     volumes:
-      - my_postgres_1data:/var/lib/postgresql/data
+      - my_postgres_1data1:/var/lib/postgresql/data
 
 volumes:
-  my_postgres_1data:
+  my_postgres_1data1:

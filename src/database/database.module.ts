@@ -8,11 +8,6 @@ dotenv.config();
   imports: [
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      // host: process.env.DB_HOST,
-      // port: parseInt(process.env.DB_PORT, 10) || 5432,
-      // username: process.env.DB_USER,
-      // password: process.env.DB_PASS,
-      // database: process.env.DB_NAME,
       uri: process.env.DATABASE_URL,
       models: [RoomEntity, BookingsEntity],
       autoLoadModels: false,

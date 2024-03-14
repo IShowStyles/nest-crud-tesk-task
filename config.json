@@ -1,8 +1,8 @@
 {
   "development": {
-    "username": "al2ex",
-    "password": "postgres2ql13",
-    "database": "nest-t2est",
+    "username": "al22ex",
+    "password": "postgres2ql213",
+    "database": "nest-t22est",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
