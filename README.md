@@ -1,45 +1,39 @@
-# Project Title
 
-Sure, I can help you create a basic `README.md` file that includes instructions on how to set up and run your application. Here's a simple example:
+# Nest.js Booking | Test task
 
-```markdown
-# Project Title
+CRUD-operations with Nest.js using Sequelize ORM and PostqrSQL
 
-This is a brief description of your project.
+# Use NPM or YARN to install packages
 
-## Prerequisites
+`` npm i ``
 
-This is a brief description of your project.
+`` yarn ``
+## Environment Variables Example
 
-## Prerequisites
+To run this project, you will need to add the following environment variables to your .env file
 
-Before you begin, ensure you have met the following requirements:
+`PORT` PORT NUMBER
 
-* You have installed the latest version of Node.js and npm/yarn.
-* You have a `<Windows/Linux/Mac>` machine. State which OS is supported and which is not.
+`DATABASE_URL`postgresql://name:passwird@localhost:5432/databasename
 
-## Installing <project_name>
+`DATABASE_DIALECT` postgres
 
-To install <project_name>, follow these steps:
+`NODE_ENV` development
+## Setup config json file
 
-1. Clone the repository: `git clone https://github.com/<your_username>/<project_name>.git`
-Before you begin, ensure you have met the following requirements:
+``
+{
+"development": {
+"username": "name",
+"password": "password",
+"database": "databasename",
+"host": "127.0.0.1",
+"dialect": "postgres"
+}
+}``
 
-2. Navigate to the project directory: `cd <project_name>`
-* You have installed the latest version of Node.js and npm/yarn.
-3. Install the dependencies: `npm install` or `yarn install`
 
-* You have a `<macOS>` machine. 
+# Migration
 
-## Installing <project_name>
+Run `` npm run migrate `` or `` yarn migrate `` to apply migration 
 
-## Using <project_name>
-
-To install <project_name>, follow these steps:
-
-To use <project_name>, follow these steps:
-
-1. Clone the repository:
-```bash
-1. Build the project: `npm run build` or `yarn build`
-git clone https://github.com/<your_username>/<project_name>.git
