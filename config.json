@@ -1,0 +1,22 @@
+{
+  "development": {
+    "username": "al2ex",
+    "password": "postgres2ql13",
+    "database": "nest-t2est",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "db_123testnest_user",
+    "password": "QoloDnmG9wJNZRxeoEo4aYbJrud2CQ0f",
+    "database": "db_123testnest",
+    "host": "dpg-cnpd4kvsc6pc73fr1ceg-a.oregon-postgres.render.com",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
+  }
+}
