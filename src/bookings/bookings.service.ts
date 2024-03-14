@@ -14,6 +14,7 @@ import { Op } from 'sequelize';
 import { CreateBookingDto, UpdateBookingDto } from './dtos';
 import { Sequelize } from 'sequelize-typescript';
 import { RoomEntity } from '../rooms/entities/room.entity';
+import dateValidation from '../common/utils/date.validation';
 
 @Injectable()
 export class BookingsService {
@@ -33,6 +34,7 @@ export class BookingsService {
     if (isNaN(roomId)) {
       throw new Error('Invalid room ID');
     }
+
     const conflictCondition = {
       roomId,
       [Op.or]: [
@@ -59,6 +61,9 @@ export class BookingsService {
       conflictCondition['roomId'] = excludeBookingId;
     }
 
+    if (!dateValidation(startDate, endDate)) {
+      throw new BadRequestException('Invalid date');
+    }
     const conflictingBookings = await this.bookingsModel.findOne({
       where: conflictCondition,
     });
