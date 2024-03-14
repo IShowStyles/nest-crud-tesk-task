@@ -19,7 +19,10 @@ To run this project, you will need to add the following environment variables to
 `DATABASE_DIALECT` postgres
 
 `NODE_ENV` development
-## Setup config json file
+
+## Setup config json file in root directory
+
+
 
 ``
 {
