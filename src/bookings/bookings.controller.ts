@@ -2,15 +2,16 @@ import {
   Body,
   Controller,
   Delete,
-  Get, HttpCode,
+  Get,
+  HttpCode,
   Param,
   Post,
   Put,
-  UseGuards
-} from "@nestjs/common";
+  UseGuards,
+} from '@nestjs/common';
 import { BookingsService } from './bookings.service';
-import { BookingsEntity } from './entities/bookings.entity';
-import { CreateBookingDto, UpdateBookingDto } from './dtos';
+import { BookingsEntity } from './entities';
+import { BookingDto } from './dtos';
 import {
   ApiBody,
   ApiParam,
@@ -33,12 +34,12 @@ export class BookingsController {
     description: 'The record has been successfully created.',
     type: BookingsEntity,
   })
-  @ApiBody({ type: CreateBookingDto })
+  @ApiBody({ type: BookingDto })
   @UseGuards(RoomAvailableGuard)
   @CustomLog({ timestamp: true, propertyName: 'Rooms' })
   @HttpCode(201)
   async create(
-    @Body() createBookingDto: CreateBookingDto,
+    @Body() createBookingDto: BookingDto,
   ): Promise<BookingsEntity> {
     return await this.bookingsService.createBooking(createBookingDto);
   }
@@ -72,7 +73,7 @@ export class BookingsController {
   @Put(':id')
   @ApiOperation({ summary: 'Update a booking by its ID' })
   @ApiParam({ name: 'id', type: Number, description: 'Booking ID' })
-  @ApiBody({ type: UpdateBookingDto })
+  @ApiBody({ type: BookingDto })
   @ApiResponse({
     status: 200,
     description: 'Updated bookings entity',
@@ -82,7 +83,7 @@ export class BookingsController {
   @CustomLog({ timestamp: true, propertyName: 'Rooms' })
   async update(
     @Param('id') id: number,
-    @Body() updateBookingDto: UpdateBookingDto,
+    @Body() updateBookingDto: BookingDto,
   ): Promise<BookingsEntity> {
     return await this.bookingsService.updateBooking(+id, updateBookingDto);
   }
@@ -100,11 +101,11 @@ export class BookingsController {
     type: BookingsEntity,
   })
   @HttpCode(200)
-  @ApiBody({ type: UpdateBookingDto })
+  @ApiBody({ type: BookingDto })
   @CustomLog({ timestamp: true, propertyName: 'Rooms' })
   async updateOrCreate(
     @Param('id') id: number,
-    @Body() dto: UpdateBookingDto,
+    @Body() dto: BookingDto,
   ): Promise<BookingsEntity> {
     return await this.bookingsService.updateOrCreate(+id, dto);
   }

@@ -1,4 +1,3 @@
-import { CreateBookingDto } from './createBooking.dto';
-import { UpdateBookingDto } from './updateBooking.dto';
+import { BookingDto } from './booking.dto';
 
-export { CreateBookingDto, UpdateBookingDto };
+export { BookingDto };

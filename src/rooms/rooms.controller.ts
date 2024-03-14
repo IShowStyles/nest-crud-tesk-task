@@ -8,11 +8,9 @@ import {
   Param,
   Post,
   Put,
-  UseGuards,
-  UsePipes,
 } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
-import { CreateRoomDto, UpdateRoomDto } from './dtos';
+import { RoomDto } from './dtos';
 import { RoomEntity } from './entities/room.entity';
 import {
   ApiBody,
@@ -38,10 +36,10 @@ export class RoomsController {
     description: 'The room has been successfully created.',
     type: RoomEntity,
   })
-  @ApiBody({ type: CreateRoomDto })
+  @ApiBody({ type: RoomDto })
   @HttpCode(HttpStatus.CREATED)
   @CustomLog({ timestamp: true, propertyName: 'Rooms' })
-  async create(@Body() createRoomDto: CreateRoomDto): Promise<RoomEntity> {
+  async create(@Body() createRoomDto: RoomDto): Promise<RoomEntity> {
     console.log('createRoomDto', createRoomDto);
     return await this.roomsService.createRoom(createRoomDto);
   }
@@ -96,12 +94,12 @@ export class RoomsController {
     description: 'The updated room details.',
     type: RoomEntity,
   })
-  @ApiBody({ type: UpdateRoomDto })
+  @ApiBody({ type: RoomDto })
   @CustomLog({ timestamp: true, propertyName: 'Rooms' })
   @HttpCode(HttpStatus.OK)
   async update(
     @Param('id') id: number,
-    @Body() updateRoomDto: UpdateRoomDto,
+    @Body() updateRoomDto: RoomDto,
   ): Promise<RoomEntity> {
     return await this.roomsService.updateRoom(+id, updateRoomDto);
   }
@@ -122,12 +120,12 @@ export class RoomsController {
     description: 'The upserted room details.',
     type: RoomEntity,
   })
-  @ApiBody({ type: CreateRoomDto })
+  @ApiBody({ type: RoomDto })
   @CustomLog({ timestamp: true, propertyName: 'Rooms' })
   @HttpCode(HttpStatus.OK)
   async updateOrCreate(
     @Param('id') id: number,
-    @Body() dto: CreateRoomDto,
+    @Body() dto: RoomDto,
   ): Promise<RoomEntity> {
     return await this.roomsService.updateOrCreate(+id, dto);
   }

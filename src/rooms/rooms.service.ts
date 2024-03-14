@@ -5,48 +5,70 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { RoomEntity } from './entities/room.entity';
-import { CreateRoomDto, UpdateRoomDto } from './dtos';
+import { RoomDto } from './dtos';
+import { BookingsEntity } from '../bookings/entities';
 
 @Injectable()
 export class RoomsService {
   constructor(
+    @InjectModel(BookingsEntity)
+    private bookingsModel: typeof BookingsEntity,
     @InjectModel(RoomEntity)
     private roomsModel: typeof RoomEntity,
   ) {}
 
-  async createRoom(dto: CreateRoomDto): Promise<RoomEntity> {
-    const existingRoom = await this.roomsModel.findOne({
-      where: { name: dto.name },
-    });
+  async createRoom(dto: RoomDto): Promise<RoomEntity> {
+    try {
+      const existingRoom = await this.roomsModel.findOne({
+        where: { name: dto.name },
+      });
 
-    if (existingRoom) {
-      throw new BadRequestException('Room with the given name already exists');
+      if (existingRoom) {
+        throw new BadRequestException(
+          'Room with the given name already exists',
+        );
+      }
+
+      const room = new RoomEntity({
+        ...dto,
+      });
+
+      await room.save();
+      return room;
+    } catch (e) {
+      throw new BadRequestException('smth went wrong: ' + e.message);
     }
-
-    const room = new RoomEntity({
-      ...dto,
-    });
-
-    await room.save();
-    return room;
   }
 
   async findAllRooms(): Promise<RoomEntity[]> {
-    return await this.roomsModel.findAll();
+    try {
+      return await this.roomsModel.findAll();
+    } catch (e) {
+      throw new BadRequestException('smth went wrong: ' + e.message);
+    }
   }
 
-  async updateOrCreate(id: number, dto: UpdateRoomDto): Promise<RoomEntity> {
-    let data = undefined;
-    const room = await this.roomsModel.findOne({
-      where: { id },
-    });
-    if (room!) {
-      data = await this.updateRoom(id, dto);
-      return data;
+  async updateOrCreate(id: number, dto: RoomDto): Promise<RoomEntity> {
+    try {
+      let data = undefined;
+      const roomID = await this.roomsModel.findOne({
+        where: { id },
+      });
+      const roomNames = await this.getUniqueRoomAndID(id, dto);
+
+      if (roomID) {
+        data = await this.updateRoom(id, dto);
+        return data;
+      }
+
+      if (!roomNames) {
+        data = await this.createRoom(dto as Required<RoomDto>);
+        console.log(123);
+        return data;
+      }
+    } catch (e) {
+      throw new BadRequestException('smth went wrong: ' + e.message);
     }
-    console.log(122112);
-    data = await this.createRoom(dto as Required<UpdateRoomDto>);
-    return data;
   }
 
   async findRoomById(id: number): Promise<RoomEntity> {
@@ -65,21 +87,55 @@ export class RoomsService {
     }
   }
 
-  async updateRoom(
-    id: number,
-    updateRoomDto: UpdateRoomDto,
-  ): Promise<RoomEntity> {
-    const [updated] = await this.roomsModel.update(updateRoomDto, {
-      where: { id: id },
-    });
-    if (!updated) {
-      throw new NotFoundException(`Room with ID ${id} not found`);
+  async updateRoom(id: number, updateRoomDto: RoomDto): Promise<RoomEntity> {
+    try {
+      const room = await this.roomsModel.findOne({
+        where: { id },
+      });
+
+      if (!room) {
+        throw new NotFoundException(`Room with ID ${id} not found`);
+      }
+
+      await room.update(updateRoomDto);
+      return room;
+    } catch (e) {
+      throw new BadRequestException('Smth went wrong:' + e.message);
     }
-    return await this.findRoomById(id);
+  }
+
+  async getUniqueRoomAndID(id: number, dto: RoomDto): Promise<boolean> {
+    try {
+      const room = await this.roomsModel.findOne({
+        where: { id: id },
+      });
+      if (room) {
+        return false;
+      }
+
+      const existingRoom = await this.roomsModel.findOne({
+        where: { name: dto.name, description: dto.description },
+      });
+
+      if (!existingRoom) {
+        return false;
+      }
+
+      return !!room;
+    } catch (e) {
+      throw new BadRequestException('smth went wrong: ' + e.message);
+    }
   }
 
   async deleteRoom(id: number): Promise<void> {
-    const room = await this.findRoomById(id);
-    await room.destroy();
+    try {
+      const room = await this.findRoomById(id);
+      await this.bookingsModel.destroy({
+        where: { roomId: id },
+      });
+      await room.destroy();
+    } catch (e) {
+      throw new BadRequestException('smth went wrong: ' + e.message);
+    }
   }
 }

@@ -28,13 +28,6 @@ export class BookingsEntity extends Model {
   })
   @ApiProperty({ example: 1, description: 'Quantity count' })
   roomId: number;
-
-  // @Column({
-  //   type: DataType.INTEGER,
-  // })
-  // @ApiProperty({ example: 1, description: 'Quantity count' })
-  // quantity: number;
-
   @Column({
     type: DataType.STRING,
   })

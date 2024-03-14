@@ -13,7 +13,6 @@ dotenv.config();
       // username: process.env.DB_USER,
       // password: process.env.DB_PASS,
       // database: process.env.DB_NAME,
-      ssl: true,
       uri: process.env.DATABASE_URL,
       models: [RoomEntity, BookingsEntity],
       autoLoadModels: false,
